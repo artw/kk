@@ -1,0 +1,5 @@
+FROM scratch
+COPY build/kk /
+USER 1000
+EXPOSE 8080
+ENTRYPOINT ["/kk"]
