@@ -22,11 +22,7 @@ var dynamicClient dynamic.Interface
 func main() {
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		// For local development, if not running inside a cluster
-		config, err = clientcmd.BuildConfigFromFlags("", "/path/to/.kube/config")
-		if err != nil {
 			panic(err.Error())
-		}
 	}
 
 	dynamicClient, err = dynamic.NewForConfig(config)
@@ -49,7 +45,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	contentType := r.Header.Get("Content-Type")
 	var jsonBody []byte
 	switch contentType {
-	case "application/yaml", "text/yaml":
+	case "application/yaml":
 		jsonBody, err = yaml.YAMLToJSON(body)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error converting YAML to JSON: %v", err), http.StatusBadRequest)
